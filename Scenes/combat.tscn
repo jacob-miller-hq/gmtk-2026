@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://dd7oj75k5d0iw"]
+
+[ext_resource type="Script" uid="uid://cvqtajjvt2l28" path="res://Scenes/combat.gd" id="1_4ln8h"]
+[ext_resource type="PackedScene" uid="uid://y38llheoj46j" path="res://Scenes/hand.tscn" id="1_7jmb3"]
+[ext_resource type="PackedScene" uid="uid://cdbx3l14rju36" path="res://Scenes/hero.tscn" id="2_fe60u"]
+
+[node name="Combat" type="Node2D" unique_id=36955880 node_paths=PackedStringArray("heroes")]
+script = ExtResource("1_4ln8h")
+heroes = []
+
+[node name="Hand" parent="." unique_id=1096619337 instance=ExtResource("1_7jmb3")]
+position = Vector2(1002, 951)
+scale = Vector2(2, 2)
+
+[node name="Hero" parent="." unique_id=45548510 instance=ExtResource("2_fe60u")]
+position = Vector2(449, 473)
+scale = Vector2(2, 2)
+hero_name = "Hero Heroman"
+age = 42
+max_hp = 15
+hp = 15
