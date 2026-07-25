@@ -58,15 +58,22 @@ theme_override_font_sizes/font_size = 32
 text = "Map (M)"
 
 [node name="Map" parent="." unique_id=1430202992 instance=ExtResource("5_map0")]
+
 [node name="Heroes" type="Node2D" parent="." unique_id=464190963]
 
 [node name="Hero" parent="Heroes" unique_id=45548510 instance=ExtResource("2_fe60u")]
-position = Vector2(449, 473)
+position = Vector2(644, 494)
 scale = Vector2(2, 2)
 hero_name = "Hero Heroman"
 age = 42
 max_hp = 15
 hp = 15
+
+[node name="ReferenceRect" type="ReferenceRect" parent="Heroes" unique_id=51076942]
+offset_left = 297.0
+offset_top = 212.0
+offset_right = 1002.0
+offset_bottom = 711.0
 
 [connection signal="gui_input" from="NextTurn" to="." method="_on_next_turn_gui_input"]
 [connection signal="pressed" from="MapButton" to="Map" method="toggle"]
