@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://vtp2khnxr2km"]
+
+[ext_resource type="Script" uid="uid://sji67ococ8is" path="res://Scenes/map.gd" id="1_map"]
+
+[node name="Map" type="CanvasLayer" unique_id=1340297010]
+script = ExtResource("1_map")
+
+[node name="Background" type="ColorRect" parent="." unique_id=1797458819]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.06, 0.07, 0.1, 0.95)
+
+[node name="Hint" type="Label" parent="." unique_id=955324830]
+offset_left = 40.0
+offset_top = 24.0
+offset_right = 1200.0
+offset_bottom = 60.0
+text = "Choose your path — click a highlighted room.   [M] or Close to exit."
+
+[node name="Content" type="Node2D" parent="." unique_id=919367655]
+
+[node name="CloseButton" type="Button" parent="." unique_id=1598571838]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -204.0
+offset_top = 36.0
+offset_right = -40.0
+offset_bottom = 104.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 32
+text = "✕ Close"
+
+[connection signal="pressed" from="CloseButton" to="." method="close"]
