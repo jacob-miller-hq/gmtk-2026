@@ -12,19 +12,11 @@ font_color = Color(0.101960786, 0.26666668, 0.1764706, 1)
 
 [node name="Combat" type="Node2D" unique_id=36955880 node_paths=PackedStringArray("heroes")]
 script = ExtResource("1_4ln8h")
-heroes = []
+heroes = [NodePath("Heroes/Hero")]
 
 [node name="Hand" parent="." unique_id=1096619337 instance=ExtResource("1_7jmb3")]
 position = Vector2(1002, 951)
 scale = Vector2(2, 2)
-
-[node name="Hero" parent="." unique_id=45548510 instance=ExtResource("2_fe60u")]
-position = Vector2(449, 473)
-scale = Vector2(2, 2)
-hero_name = "Hero Heroman"
-age = 42
-max_hp = 15
-hp = 15
 
 [node name="DrawPile" parent="." unique_id=54056495 instance=ExtResource("4_ubpar")]
 position = Vector2(108, 926)
@@ -66,6 +58,15 @@ theme_override_font_sizes/font_size = 32
 text = "Map (M)"
 
 [node name="Map" parent="." unique_id=1430202992 instance=ExtResource("5_map0")]
+[node name="Heroes" type="Node2D" parent="." unique_id=464190963]
+
+[node name="Hero" parent="Heroes" unique_id=45548510 instance=ExtResource("2_fe60u")]
+position = Vector2(449, 473)
+scale = Vector2(2, 2)
+hero_name = "Hero Heroman"
+age = 42
+max_hp = 15
+hp = 15
 
 [connection signal="gui_input" from="NextTurn" to="." method="_on_next_turn_gui_input"]
 [connection signal="pressed" from="MapButton" to="Map" method="toggle"]

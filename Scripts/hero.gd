@@ -6,25 +6,57 @@ signal hero_clicked
 @export var age: int;
 @export var max_hp: int;
 @export var hp: int;
+var action_available: bool;
 
 @onready var age_label: Label = $Nameplate/ColorRect/Age
 @onready var name_label: Label = $Nameplate/ColorRect/Name
 @onready var hp_bar: ColorRect = $Nameplate/ColorRect/HPBar
 @onready var hp_rect: ColorRect = $Nameplate/ColorRect/HPBar/HP
+@onready var action_taken: Sprite2D = $ActionTaken
+
+var abilities = {
+	0: {
+		"title": "Great sword",
+		"description": "Do 20 damage to one enemy",
+		"target": "enemy",
+		"effect": func(target):
+			target.hp -= 20,
+	},
+	1: {
+		"title": "Healing aura",
+		"description": "Heal all allies for 5hp",
+		"target": "party",
+		"effect": func(allies):
+			for ally in allies:
+				ally.hp += 5,
+	},
+	2: {
+		"title": "Guard self",
+		"description": "Take no damage this turn",
+		"target": "self",
+		"effect": func():
+			status_effects.set("guarded", true),
+	}
+}
+var status_effects = {}
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	age_label.text = str(age);
 	name_label.text = hero_name;
+	set_hp(hp)
+	
+func set_hp(new_hp):
+	hp = new_hp
 	hp_rect.size.x = lerp(0., hp_bar.size.x, float(hp) / max_hp);
 
+func set_action_available(b: bool):
+	action_available = b
+	# TODO: Maybe expand this to show different stuff for different actions,
+	#   e.g. preparing spell or whatever
+	action_taken.visible = action_available
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
-
-func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
+func _on_area_2d_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
 			emit_signal("hero_clicked");
