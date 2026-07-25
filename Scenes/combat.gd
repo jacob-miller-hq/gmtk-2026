@@ -2,7 +2,9 @@ extends Node2D
 
 const Card = preload("res://Scenes/card.tscn")
 
-@onready var hand: Node2D = $Hand
+@onready var hand_node: Node2D = $Hand
+@onready var draw_pile_node: Node2D = $DrawPile
+@onready var discard_pile_node: Node2D = $DiscardPile
 
 @onready var hero: Node2D = $Hero
 @export var heroes: Array[Node2D] = [hero]
@@ -14,8 +16,8 @@ var deck: Array[int] = [
 	1, 1, 1, 1, 1,
 	2, 2, 2, 2, 2,
 ]
-var draw_pile: Array[int]
-var discard_pile: Array[int] = []
+#var draw_pile: Array[int]
+#var discard_pile: Array[int] = []
 
 ### Turn Order
 # Enemies select actions
@@ -31,9 +33,10 @@ var discard_pile: Array[int] = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	draw_pile = deck.duplicate()
-	draw_pile.shuffle()
-	print(draw_pile)
+	#draw_pile = deck.duplicate()
+	draw_pile_node.set_pile(deck.duplicate())
+	draw_pile_node.shuffle()
+	discard_pile_node.dump()
 	draw_for_turn()
 
 func enemies_select_actions():
@@ -43,12 +46,25 @@ func draw_for_turn():
 	var new_hand: Array[Node2D] = []
 	for i in range(draw_count):
 		var card = Card.instantiate()
-		card.suit = draw_pile.pop_back()
+		if draw_pile_node.size() == 0:
+			# empty discard pile and shuffle
+			draw_pile_node.set_pile(discard_pile_node.dump())
+			draw_pile_node.shuffle()
+		card.suit = draw_pile_node.draw_card()
 		new_hand.push_back(card)
-	hand.add_cards(new_hand)
+	hand_node.add_cards(new_hand)
 
 func enemies_take_actions():
 	pass
 
 func discard_hand():
-	pass
+	discard_pile_node.place_on_top(hand_node.dump())
+
+func _on_next_turn_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.pressed:
+			enemies_take_actions()
+			# TODO: check for game over
+			discard_hand()
+			enemies_select_actions()
+			draw_for_turn()

@@ -42,3 +42,12 @@ func _handle_card_selected(index: int):
 	selected_card = cards[index]
 	print(selected_card)
 	selected_card.select()
+
+func dump():
+	var pile: Array[int] = []
+	for card in cards:
+		pile.push_back(card.suit)
+		card.queue_free()
+	cards = []
+	_arange_cards()
+	return pile
