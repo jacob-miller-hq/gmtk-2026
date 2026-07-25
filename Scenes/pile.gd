@@ -41,6 +41,6 @@ func dump():
 	return all_cards
 
 func update_count():
-	var size = array.size()
-	sprite_2d.visible = false if size == 0 else true
+	var count = array.size()
+	sprite_2d.visible = false if count == 0 else true
 	label.text = str(array.size())
