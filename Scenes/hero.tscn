@@ -15,7 +15,7 @@ font_color = Color(0, 0, 0, 1)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_stlmo"]
 radius = 60.0
-height = 200.0
+height = 154.0
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_stlmo"]
 size = Vector2(32, 32)
