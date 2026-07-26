@@ -61,5 +61,8 @@ func set_action_available(b: bool):
 func _on_area_2d_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
-			print("hero pressed")
 			emit_signal("hero_clicked");
+
+func modify_age(delta: int):
+	age += delta
+	age_label.text = str(age)

@@ -3,18 +3,22 @@ extends Node2D
 signal card_selected
 
 @onready var sprite_2d: Sprite2D = $Sprite2D
-var suit: int = 0;
-@export var card_textures: Array[Texture] = [];
+@onready var label: Label = $Sprite2D/Label
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	# replace this with sprites?
-	sprite_2d.texture = card_textures[suit]
+var v: int
+
+func set_value(value: int):
+	if value > 0: value *= -1
+	v = value
+	if label:
+		label.text = str(value)
+
+func _ready():
+	label.text = str(v)
 
 func _on_area_2d_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
-			print("card pressed")
 			emit_signal("card_selected");
 			
 func select():
