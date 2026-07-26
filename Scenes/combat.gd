@@ -16,22 +16,8 @@ var deck: Array[int] = [
 	1, 1, 1, 1, 1,
 	2, 2, 2, 2, 2,
 ]
-#var draw_pile: Array[int]
-#var discard_pile: Array[int] = []
 
-### Turn Order
-# Enemies select actions
-# Draw for turn
-#  - Reshuffle discard into deck if necessary
-# Player assigns cards to heroes <- working on this step now
-# Heroes take actions (actually, maybe this should happen as the cards are played?)
-#  - If enemy has been defeated, go to rewards screen
-# Player press [End Turn]
-# Enemies take actions
-#  - If all heroes have been defeated, game over screen
-# Discard hand
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	print(enemies.size())
 	setup_enemies()
@@ -41,6 +27,18 @@ func _ready() -> void:
 	discard_pile_node.dump()
 	enemies_select_actions()
 	draw_for_turn()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	# TEMP: no enemies yet — press Enter/Space to "win" and go to rewards.
+	# Replace with a real victory check later.
+	if event.is_action_pressed("ui_accept"):
+		win_combat()
+
+
+func win_combat() -> void:
+	get_tree().change_scene_to_file("res://Scenes/rewards.tscn")
+
 
 func setup_enemies():
 	for enemy in enemies:
@@ -88,12 +86,14 @@ func draw_for_turn():
 		new_hand.push_back(card)
 	hand_node.add_cards(new_hand)
 
+
 func enemies_take_actions():
 	for enemy in enemies:
 		enemy.take_action(heroes)
 
 func discard_hand():
 	discard_pile_node.place_on_top(hand_node.dump())
+
 
 func _on_next_turn_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:

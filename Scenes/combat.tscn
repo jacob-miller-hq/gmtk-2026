@@ -61,6 +61,7 @@ text = "Map (M)"
 
 [node name="Map" parent="." unique_id=1430202992 instance=ExtResource("5_map0")]
 visible = false
+is_screen = false
 
 [node name="Heroes" type="Node2D" parent="." unique_id=464190963]
 
