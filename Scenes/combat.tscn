@@ -5,14 +5,16 @@
 [ext_resource type="PackedScene" uid="uid://cdbx3l14rju36" path="res://Scenes/hero.tscn" id="2_fe60u"]
 [ext_resource type="PackedScene" uid="uid://bkkrab8k18iqw" path="res://Scenes/pile.tscn" id="4_ubpar"]
 [ext_resource type="PackedScene" uid="uid://vtp2khnxr2km" path="res://Scenes/map.tscn" id="5_map0"]
+[ext_resource type="PackedScene" uid="uid://b7h5iv4nnf2xx" path="res://Scenes/enemy.tscn" id="6_yt1oa"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_ubpar"]
 font_size = 48
 font_color = Color(0.101960786, 0.26666668, 0.1764706, 1)
 
-[node name="Combat" type="Node2D" unique_id=36955880 node_paths=PackedStringArray("heroes")]
+[node name="Combat" type="Node2D" unique_id=36955880 node_paths=PackedStringArray("heroes", "enemies")]
 script = ExtResource("1_4ln8h")
-heroes = []
+heroes = [NodePath("Heroes/Hero")]
+enemies = [NodePath("Enemies/Enemy"), NodePath("Enemies/Enemy2"), NodePath("Enemies/Enemy3")]
 
 [node name="Hand" parent="." unique_id=1096619337 instance=ExtResource("1_7jmb3")]
 position = Vector2(1002, 951)
@@ -58,16 +60,16 @@ theme_override_font_sizes/font_size = 32
 text = "Map (M)"
 
 [node name="Map" parent="." unique_id=1430202992 instance=ExtResource("5_map0")]
+visible = false
 is_screen = false
 
 [node name="Heroes" type="Node2D" parent="." unique_id=464190963]
 
 [node name="Hero" parent="Heroes" unique_id=45548510 instance=ExtResource("2_fe60u")]
-position = Vector2(644, 494)
-scale = Vector2(2, 2)
+position = Vector2(658, 617)
 hero_name = "Hero Heroman"
 age = 42
-max_hp = 15
+max_hp = 50
 hp = 15
 
 [node name="ReferenceRect" type="ReferenceRect" parent="Heroes" unique_id=51076942]
@@ -75,6 +77,18 @@ offset_left = 297.0
 offset_top = 212.0
 offset_right = 1002.0
 offset_bottom = 711.0
+mouse_filter = 1
+
+[node name="Enemies" type="Node" parent="." unique_id=1450459628]
+
+[node name="Enemy" parent="Enemies" unique_id=712620868 instance=ExtResource("6_yt1oa")]
+position = Vector2(1265, 546)
+
+[node name="Enemy2" parent="Enemies" unique_id=987069583 instance=ExtResource("6_yt1oa")]
+position = Vector2(1444, 501)
+
+[node name="Enemy3" parent="Enemies" unique_id=190110256 instance=ExtResource("6_yt1oa")]
+position = Vector2(1617, 549)
 
 [connection signal="gui_input" from="NextTurn" to="." method="_on_next_turn_gui_input"]
 [connection signal="pressed" from="MapButton" to="Map" method="toggle"]
