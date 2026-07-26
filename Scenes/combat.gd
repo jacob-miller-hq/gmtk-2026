@@ -21,15 +21,15 @@ var deck: Array[int] = [
 
 ### Turn Order
 # Enemies select actions
-# Player draws cards
+# Draw for turn
 #  - Reshuffle discard into deck if necessary
 # Player assigns cards to heroes <- working on this step now
 # Heroes take actions (actually, maybe this should happen as the cards are played?)
 #  - If enemy has been defeated, go to rewards screen
+# Player press [End Turn]
 # Enemies take actions
 #  - If all heroes have been defeated, game over screen
-# Player discards hand
-
+# Discard hand
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
