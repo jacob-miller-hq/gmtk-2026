@@ -43,4 +43,5 @@ func dump():
 func update_count():
 	var count = array.size()
 	sprite_2d.visible = false if count == 0 else true
+	label.visible = false if count == 0 else true
 	label.text = str(array.size())

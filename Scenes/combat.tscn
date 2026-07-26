@@ -27,10 +27,10 @@ position = Vector2(108, 926)
 position = Vector2(1813, 939)
 
 [node name="NextTurn" type="ColorRect" parent="." unique_id=854191306]
-offset_left = 1489.0
-offset_top = 702.0
-offset_right = 1889.0
-offset_bottom = 802.0
+offset_left = 1500.0
+offset_top = 639.0
+offset_right = 1900.0
+offset_bottom = 739.0
 color = Color(0.3372549, 0.54901963, 0.27450982, 1)
 
 [node name="Label" type="Label" parent="NextTurn" unique_id=1746377740]

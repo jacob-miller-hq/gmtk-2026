@@ -13,9 +13,9 @@ const Hero = preload("res://Scenes/hero.tscn")
 const draw_count = 7
 
 var deck: Array[int] = [
-	0, 0, 0, 0, 0,
-	1, 1, 1, 1, 1,
-	2, 2, 2, 2, 2,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
 ]
 
 const HERO_POS = [
