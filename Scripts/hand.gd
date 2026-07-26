@@ -7,6 +7,7 @@ var selected_card
 func add_cards(new_cards: Array[Node2D]):
 	for card in new_cards:
 		cards.push_front(card)
+		card.connect("card_selected", func(): _handle_card_selected(card))
 		add_child(card)
 	_arange_cards()
 	
@@ -17,7 +18,6 @@ func _arange_cards():
 		var lerp_weight = i / (hand_size - 1.) if hand_size > 1 else 0.5
 		card.transform.origin = Vector2(lerp(-200, 200, lerp_weight), -100 * cos(lerp_angle(-0.6, 0.6, lerp_weight)) + 100);
 		card.rotation = lerp_angle(-0.2, 0.2, lerp_weight);
-		card.connect("card_selected", func(): _handle_card_selected(card))
 
 
 # Called when the node enters the scene tree for the first time.
@@ -45,10 +45,9 @@ func discard(card: Node2D):
 		selected_card = null
 	var index = cards.find(card)
 	cards.remove_at(index)
-	var suit = card.suit
-	card.queue_free()
+	remove_child(card)
 	_arange_cards()
-	return suit
+	return card
 
 func dump():
 	var pile: Array[int] = []

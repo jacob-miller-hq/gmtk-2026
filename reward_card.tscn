@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://ds0grdpwom4xk"]
+
+[ext_resource type="Script" uid="uid://da736mg75pvms" path="res://reward_card.gd" id="1_og7hi"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_ugny5"]
+size = Vector2(440, 640)
+
+[sub_resource type="LabelSettings" id="LabelSettings_xrivr"]
+font_size = 80
+font_color = Color(0, 0.23137255, 0.4117647, 0.87058824)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ugny5"]
+size = Vector2(80, 112.5)
+
+[node name="RewardCard" type="Node2D" unique_id=1347303811]
+script = ExtResource("1_og7hi")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=82836754]
+scale = Vector2(0.18, 0.18)
+texture = SubResource("PlaceholderTexture2D_ugny5")
+
+[node name="Label" type="Label" parent="Sprite2D" unique_id=1037623830]
+offset_left = -200.0
+offset_top = -294.44443
+offset_right = -61.1111
+offset_bottom = -188.88887
+text = "-10"
+label_settings = SubResource("LabelSettings_xrivr")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=841087819]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1513610754]
+position = Vector2(0, -0.25)
+shape = SubResource("RectangleShape2D_ugny5")
+
+[connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
