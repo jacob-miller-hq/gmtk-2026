@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://ctng0vid10kqy" path="res://Scenes/rewards.gd" id="1_rw"]
 [ext_resource type="PackedScene" uid="uid://y38llheoj46j" path="res://Scenes/hand.tscn" id="2_kyjeq"]
 [ext_resource type="PackedScene" uid="uid://cdbx3l14rju36" path="res://Scenes/hero.tscn" id="3_7sr40"]
+[ext_resource type="PackedScene" uid="uid://dnpd880j1f638" path="res://Scenes/quit_button.tscn" id="4_7sr40"]
 
 [node name="Rewards" type="Control" unique_id=1865376909 node_paths=PackedStringArray("heroes")]
 layout_mode = 3
@@ -70,5 +71,8 @@ position = Vector2(961, 462)
 hero_name = "Winner McGee"
 age = 99
 max_hp = 50
+
+[node name="QuitButton" parent="." unique_id=404419385 instance=ExtResource("4_7sr40")]
+layout_mode = 0
 
 [connection signal="pressed" from="Continue" to="." method="_on_continue_pressed"]

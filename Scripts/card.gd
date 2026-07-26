@@ -20,7 +20,9 @@ func _on_area_2d_input_event(_viewport: Node, event: InputEvent, _shape_idx: int
 func select():
 	sprite_2d.scale *= 1.5
 	transform.origin += Vector2(0, -20)
+	z_index = 1
 
 func deselect():
 	sprite_2d.scale /= 1.5
 	transform.origin += Vector2(0, 20)
+	z_index = 0
