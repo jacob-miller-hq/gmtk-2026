@@ -1,6 +1,7 @@
 extends Node2D
 
 const Card = preload("res://Scenes/card.tscn")
+const Hero = preload("res://Scenes/hero.tscn")
 
 @onready var hand_node: Node2D = $Hand
 @onready var draw_pile_node: Node2D = $DrawPile
@@ -17,6 +18,17 @@ var deck: Array[int] = [
 	2, 2, 2, 2, 2,
 ]
 
+const HERO_POS = [
+	Vector2(380, 380),
+	Vector2(550, 380),
+	Vector2(720, 380),
+
+	Vector2(380, 600),
+	Vector2(550, 600),
+	Vector2(720, 600),
+]
+
+var _hero_data: Array = []   # [{ Node2D, HeroData }] so we can write changes back
 
 func _ready() -> void:
 	print(enemies.size())
@@ -37,6 +49,8 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func win_combat() -> void:
+	for pair in _hero_data:
+		pair.data.hp = pair.node.hp
 	get_tree().change_scene_to_file("res://Scenes/rewards.tscn")
 
 
@@ -44,10 +58,16 @@ func setup_enemies():
 	for enemy in enemies:
 		enemy.setup()
 
-func setup_heroes():
-	for hero in heroes:
-		hero.set_hp(hero.max_hp)
-		hero.set_action_available(true)
+func setup_heroes() -> void:
+	var i := 0
+	for data in Run.heroes:
+		var hero = Hero.instantiate()
+		hero.hero_name = data.hero_name
+		hero.age = data.age
+		hero.max_hp = data.max_hp
+		hero.hp = data.hp
+		hero.position = HERO_POS[i]
+		hero.scale = Vector2(0.8, 0.8)
 		hero.connect("hero_clicked", func():
 			var card = hand_node.selected_card
 			if card != null && hero.action_available && hero.abilities.has(card.suit):
@@ -57,7 +77,7 @@ func setup_heroes():
 				print(ability.title)
 				match(ability.target):
 					"party":
-						ability.effect.call(heroes)
+						ability.effect.call(_hero_data.map(func (pair): return pair.node))
 					"enemies":
 						ability.effect.call(enemies)
 					"self":
@@ -69,6 +89,10 @@ func setup_heroes():
 				return
 			print(hero.abilities) # TODO
 		)
+		add_child(hero)
+		hero.set_action_available(true)
+		_hero_data.append({ "node": hero, "data": data })
+		i = i + 1
 
 func enemies_select_actions():
 	for enemy in enemies:
@@ -87,9 +111,16 @@ func draw_for_turn():
 	hand_node.add_cards(new_hand)
 
 
+func get_hero_nodes() -> Array[Node2D]:
+	var out: Array[Node2D] = []
+	for pair in _hero_data:
+		out.append(pair["node"])
+	return out
+
+
 func enemies_take_actions():
 	for enemy in enemies:
-		enemy.take_action(heroes)
+		enemy.take_action(get_hero_nodes())
 
 func discard_hand():
 	discard_pile_node.place_on_top(hand_node.dump())
@@ -99,7 +130,7 @@ func _on_next_turn_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
 			enemies_take_actions()
-			var all_dead = clear_dead(heroes)
+			var all_dead = clear_dead(get_hero_nodes())
 			if all_dead:
 				print("RUN FAILED.")
 			# TODO: check for game over
@@ -109,7 +140,7 @@ func _on_next_turn_gui_input(event: InputEvent) -> void:
 			heroes_make_ready()
 
 func heroes_make_ready():
-	for hero in heroes:
+	for hero in get_hero_nodes():
 		hero.set_action_available(true)
 
 func clear_dead(group: Array[Node2D]):

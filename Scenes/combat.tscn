@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://cvqtajjvt2l28" path="res://Scenes/combat.gd" id="1_4ln8h"]
 [ext_resource type="PackedScene" uid="uid://y38llheoj46j" path="res://Scenes/hand.tscn" id="1_7jmb3"]
-[ext_resource type="PackedScene" uid="uid://cdbx3l14rju36" path="res://Scenes/hero.tscn" id="2_fe60u"]
 [ext_resource type="PackedScene" uid="uid://bkkrab8k18iqw" path="res://Scenes/pile.tscn" id="4_ubpar"]
 [ext_resource type="PackedScene" uid="uid://vtp2khnxr2km" path="res://Scenes/map.tscn" id="5_map0"]
 [ext_resource type="PackedScene" uid="uid://b7h5iv4nnf2xx" path="res://Scenes/enemy.tscn" id="6_yt1oa"]
@@ -14,7 +13,7 @@ font_color = Color(0.101960786, 0.26666668, 0.1764706, 1)
 
 [node name="Combat" type="Node2D" unique_id=36955880 node_paths=PackedStringArray("heroes", "enemies")]
 script = ExtResource("1_4ln8h")
-heroes = [NodePath("Heroes/Hero")]
+heroes = [NodePath("")]
 enemies = [NodePath("Enemies/Enemy"), NodePath("Enemies/Enemy2"), NodePath("Enemies/Enemy3")]
 
 [node name="Hand" parent="." unique_id=1096619337 instance=ExtResource("1_7jmb3")]
@@ -65,20 +64,6 @@ visible = false
 is_screen = false
 
 [node name="Heroes" type="Node2D" parent="." unique_id=464190963]
-
-[node name="Hero" parent="Heroes" unique_id=45548510 instance=ExtResource("2_fe60u")]
-position = Vector2(658, 617)
-hero_name = "Hero Heroman"
-age = 42
-max_hp = 50
-hp = 15
-
-[node name="ReferenceRect" type="ReferenceRect" parent="Heroes" unique_id=51076942]
-offset_left = 297.0
-offset_top = 212.0
-offset_right = 1002.0
-offset_bottom = 711.0
-mouse_filter = 1
 
 [node name="Enemies" type="Node" parent="." unique_id=1450459628]
 

@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3 uid="uid://dyrgujb3rnrap"]
 
-[ext_resource type="Script" path="res://Scenes/rewards.gd" id="1_rw"]
+[ext_resource type="Script" uid="uid://ctng0vid10kqy" path="res://Scenes/rewards.gd" id="1_rw"]
 
-[node name="Rewards" type="Control"]
+[node name="Rewards" type="Control" unique_id=2138808519]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,7 +11,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_rw")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="ColorRect" parent="." unique_id=1967523003]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -20,7 +20,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.09, 0.08, 0.06, 1)
 
-[node name="Title" type="Label" parent="."]
+[node name="Title" type="Label" parent="." unique_id=1316432040]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -38,7 +38,7 @@ text = "Victory!"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Continue" type="Button" parent="."]
+[node name="Continue" type="Button" parent="." unique_id=1621137669]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5

@@ -117,6 +117,7 @@ func _build_map() -> void:
 			_edges.append({ "line": line, "from": from_room, "to": to_room })
 
 
+# Draw all visited rooms with VISITED color
 func _restore_from_run() -> void:
 	for id in Run.visited:
 		if _rooms.has(id):
@@ -133,8 +134,9 @@ func _on_room_selected(room: MapRoom) -> void:
 	if not Run.visited.has(Run.current_room_id):
 		Run.visited.append(Run.current_room_id)
 	Run.current_room_id = room.name
+	Run.current_room_type = room.room_type
 	
-	# Signal the other scenes to pass room parameters
+	# Signal the other scenes to pass room parameters (TODO: we might not need this)
 	room_chosen.emit(room)
 	
 	is_screen = false
