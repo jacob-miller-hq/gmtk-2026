@@ -5,9 +5,9 @@ const Card = preload("res://Scenes/card.tscn")
 @onready var hand_node: Node2D = $Hand
 @onready var draw_pile_node: Node2D = $DrawPile
 @onready var discard_pile_node: Node2D = $DiscardPile
-@onready var hero: Node2D = $Hero
 
-@export var heroes: Array[Node2D] = []
+@onready var hero: Node2D = $Hero
+@export var heroes: Array[Node2D] = [hero]
 
 const draw_count = 5
 
@@ -16,55 +16,30 @@ var deck: Array[int] = [
 	1, 1, 1, 1, 1,
 	2, 2, 2, 2, 2,
 ]
-#var draw_pile: Array[int]
-#var discard_pile: Array[int] = []
 
-### Turn Order
-# Enemies select actions
-# Draw for turn
-#  - Reshuffle discard into deck if necessary
-# Player assigns cards to heroes <- working on this step now
-# Heroes take actions (actually, maybe this should happen as the cards are played?)
-#  - If enemy has been defeated, go to rewards screen
-# Player press [End Turn]
-# Enemies take actions
-#  - If all heroes have been defeated, game over screen
-# Discard hand
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	setup_heroes()
+	# The fight starts right away — room choosing happens on the map screen.
 	draw_pile_node.set_pile(deck.duplicate())
 	draw_pile_node.shuffle()
 	discard_pile_node.dump()
 	draw_for_turn()
 
+
 func _unhandled_input(event: InputEvent) -> void:
-	## TODO: Replace with real victory condition
+	# TEMP: no enemies yet — press Enter/Space to "win" and go to rewards.
+	# Replace with a real victory check later.
 	if event.is_action_pressed("ui_accept"):
 		win_combat()
 
-func setup_heroes():
-	# TODO: these should probably be instantiated here
-	for hero in heroes:
-		print(hero.hero_name)
-		hero.set_hp(hero.max_hp)
-		hero.set_action_available(true)
-		hero.connect("hero_clicked", func():
-			var card = hand_node.selected_card
-			if card != null && hero.action_available && hero.abilities.has(card.suit):
-				var ability = hero.abilities.get(card.suit)
-				var discarded: Array[int] = [hand_node.discard(card)]
-				discard_pile_node.place_on_top(discarded)
-				print(ability.title)
-				hero.set_action_available(false)
-				return
-			print(hero.abilities) # TODO
-		)
+
+func win_combat() -> void:
+	get_tree().change_scene_to_file("res://Scenes/rewards.tscn")
+
 
 func enemies_select_actions():
-	print("Enemy will attack")
-	pass # TODO
+	pass
+
 
 func draw_for_turn():
 	var new_hand: Array[Node2D] = []
@@ -78,12 +53,14 @@ func draw_for_turn():
 		new_hand.push_back(card)
 	hand_node.add_cards(new_hand)
 
+
 func enemies_take_actions():
-	print("Enemy attack")
-	pass # TODO
+	pass
+
 
 func discard_hand():
 	discard_pile_node.place_on_top(hand_node.dump())
+
 
 func _on_next_turn_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
@@ -93,13 +70,3 @@ func _on_next_turn_gui_input(event: InputEvent) -> void:
 			discard_hand()
 			enemies_select_actions()
 			draw_for_turn()
-			heroes_make_ready()
-
-func heroes_make_ready():
-	for hero in heroes:
-		hero.set_action_available(true)
-
-
-## Move to Rewards screen
-func win_combat() -> void:
-	get_tree().change_scene_to_file("res://Scenes/rewards.tscn")

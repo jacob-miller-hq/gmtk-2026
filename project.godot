@@ -11,9 +11,13 @@ config_version=5
 [application]
 
 config/name="De-aging"
-run/main_scene="uid://dd7oj75k5d0iw"
+run/main_scene="res://Scenes/map.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://Sprites/icon.svg"
+
+[autoload]
+
+Run="*res://Scripts/Run.gd"
 
 [display]
 

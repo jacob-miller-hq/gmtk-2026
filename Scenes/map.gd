@@ -16,7 +16,7 @@ extends CanvasLayer
 
 signal room_chosen(room: MapRoom)
 
-@export var is_screen := true
+@export var is_screen: bool = true
 
 @onready var content: Node2D = $Content
 @onready var background: ColorRect = $Background
@@ -125,7 +125,12 @@ func _on_room_selected(room: MapRoom) -> void:
 	if not Run.visited.has(Run.current_room_id):
 		Run.visited.append(Run.current_room_id)
 	Run.current_room_id = room.name
+	
+	# Signal the other scenes to pass room parameters
 	room_chosen.emit(room)
+	
+	is_screen = false
+	hide()
 	get_tree().change_scene_to_file("res://Scenes/combat.tscn")
 
 
