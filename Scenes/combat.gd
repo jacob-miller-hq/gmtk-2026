@@ -5,6 +5,7 @@ const Card = preload("res://Scenes/card.tscn")
 @onready var hand_node: Node2D = $Hand
 @onready var draw_pile_node: Node2D = $DrawPile
 @onready var discard_pile_node: Node2D = $DiscardPile
+@onready var hero: Node2D = $Hero
 
 @export var heroes: Array[Node2D] = []
 
@@ -37,6 +38,11 @@ func _ready() -> void:
 	draw_pile_node.shuffle()
 	discard_pile_node.dump()
 	draw_for_turn()
+
+func _unhandled_input(event: InputEvent) -> void:
+	## TODO: Replace with real victory condition
+	if event.is_action_pressed("ui_accept"):
+		win_combat()
 
 func setup_heroes():
 	# TODO: these should probably be instantiated here
@@ -92,3 +98,8 @@ func _on_next_turn_gui_input(event: InputEvent) -> void:
 func heroes_make_ready():
 	for hero in heroes:
 		hero.set_action_available(true)
+
+
+## Move to Rewards screen
+func win_combat() -> void:
+	get_tree().change_scene_to_file("res://Scenes/rewards.tscn")

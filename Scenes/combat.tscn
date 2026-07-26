@@ -10,9 +10,8 @@
 font_size = 48
 font_color = Color(0.101960786, 0.26666668, 0.1764706, 1)
 
-[node name="Combat" type="Node2D" unique_id=36955880 node_paths=PackedStringArray("heroes")]
+[node name="Combat" type="Node2D" unique_id=36955880]
 script = ExtResource("1_4ln8h")
-heroes = [NodePath("Heroes/Hero")]
 
 [node name="Hand" parent="." unique_id=1096619337 instance=ExtResource("1_7jmb3")]
 position = Vector2(1002, 951)
@@ -58,6 +57,7 @@ theme_override_font_sizes/font_size = 32
 text = "Map (M)"
 
 [node name="Map" parent="." unique_id=1430202992 instance=ExtResource("5_map0")]
+
 [node name="Heroes" type="Node2D" parent="." unique_id=464190963]
 
 [node name="Hero" parent="Heroes" unique_id=45548510 instance=ExtResource("2_fe60u")]
