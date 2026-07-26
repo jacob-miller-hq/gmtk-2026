@@ -28,7 +28,10 @@ const HERO_POS = [
 	Vector2(720, 600),
 ]
 
-var _hero_data: Array = []   # [{ Node2D, HeroData }] so we can write changes back
+# Hero nodes in play this combat. Each node references its own HeroData
+# (the persistent source of truth in Run.heroes), so there is no per-node stat
+# copy to sync back — this is purely the per-combat view list.
+var _hero_nodes: Array[Node2D] = []
 
 func _ready() -> void:
 	print(enemies.size())
@@ -42,8 +45,7 @@ func _ready() -> void:
 
 func win_combat() -> void:
 	# TODO: alternate scene for graveyards
-	for pair in _hero_data:
-		pair.data.hp = pair.node.hp
+	# HeroData was mutated live during combat, so there is nothing to write back.
 	get_tree().change_scene_to_file("res://Scenes/rewards.tscn")
 
 func game_over() -> void:
@@ -54,40 +56,36 @@ func setup_enemies():
 		enemy.setup()
 
 func setup_heroes() -> void:
-	var i := 0
-	for data in Run.heroes:
+	for i in Run.heroes.size():
 		var hero = Hero.instantiate()
-		hero.hero_name = data.hero_name
-		hero.age = data.age
-		hero.max_hp = data.max_hp
-		hero.hp = data.hp
+		hero.setup(Run.heroes[i])
 		hero.position = HERO_POS[i]
 		hero.scale = Vector2(0.8, 0.8)
-		hero.connect("hero_clicked", func():
-			var card = hand_node.selected_card
-			if card != null && hero.action_available && hero.abilities.has(card.suit):
-				var ability = hero.abilities.get(card.suit)
-				var discarded: Array[int] = [hand_node.discard(card).suit]
-				discard_pile_node.place_on_top(discarded)
-				print(ability.title)
-				match(ability.target):
-					"party":
-						ability.effect.call(_hero_data.map(func (pair): return pair.node))
-					"enemies":
-						ability.effect.call(enemies)
-					"self":
-						ability.effect.call(hero)
-				hero.set_action_available(false)
-				var all_dead = clear_dead(enemies)
-				if all_dead:
-					win_combat()
-				return
-			print(hero.abilities) # TODO
-		)
+		hero.connect("hero_clicked", _on_hero_clicked.bind(hero))
 		add_child(hero)
 		hero.set_action_available(true)
-		_hero_data.append({ "node": hero, "data": data })
-		i = i + 1
+		_hero_nodes.append(hero)
+
+func _on_hero_clicked(hero: Node2D) -> void:
+	var card = hand_node.selected_card
+	if card != null && hero.action_available && hero.abilities.has(card.suit):
+		var ability = hero.abilities.get(card.suit)
+		var discarded: Array[int] = [hand_node.discard(card).suit]
+		discard_pile_node.place_on_top(discarded)
+		print(ability.title)
+		match(ability.target):
+			"party":
+				ability.effect.call(get_hero_nodes())
+			"enemies":
+				ability.effect.call(enemies)
+			"self":
+				ability.effect.call(hero)
+		hero.set_action_available(false)
+		var all_dead = clear_dead(enemies)
+		if all_dead:
+			win_combat()
+		return
+	print(hero.abilities) # TODO
 
 func enemies_select_actions():
 	for enemy in enemies:
@@ -108,8 +106,9 @@ func draw_for_turn():
 
 func get_hero_nodes() -> Array[Node2D]:
 	var out: Array[Node2D] = []
-	for pair in _hero_data:
-		out.append(pair["node"])
+	for hero in _hero_nodes:
+		if is_instance_valid(hero): # because Nodes can be pruned under us
+			out.append(hero)
 	return out
 
 
@@ -125,10 +124,9 @@ func _on_next_turn_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
 			enemies_take_actions()
-			var all_dead = clear_dead(get_hero_nodes())
+			var all_dead = clear_dead_heroes()
 			if all_dead:
 				game_over()
-			# TODO: check for game over
 			discard_hand()
 			enemies_select_actions()
 			draw_for_turn()
@@ -138,6 +136,7 @@ func heroes_make_ready():
 	for hero in get_hero_nodes():
 		hero.set_action_available(true)
 
+# Enemies live in the real @export array, so removing them in place is correct.
 func clear_dead(group: Array[Node2D]):
 	for member in group.duplicate():
 		if member.hp <= 0:
@@ -145,3 +144,15 @@ func clear_dead(group: Array[Node2D]):
 			group.remove_at(index)
 			member.queue_free()
 	return group.size() == 0
+
+# Heroes: prune the dead hero from Run.heroes (the source of truth) and from the
+# per-combat view list, then free the node. Because the entry is removed from
+# both places at once, nothing is left holding a reference to a freed node.
+func clear_dead_heroes() -> bool:
+	for hero in _hero_nodes.duplicate():
+		if not is_instance_valid(hero) or hero.hp <= 0:
+			if is_instance_valid(hero):
+				Run.heroes.erase(hero.data)
+				hero.queue_free()
+			_hero_nodes.erase(hero)
+	return _hero_nodes.is_empty()

@@ -123,6 +123,10 @@ func _restore_from_run() -> void:
 		if _rooms.has(id):
 			_rooms[id].set_state(MapRoom.State.VISITED)
 	_set_current(_rooms[Run.current_room_id])
+	# at the top of _restore_from_run:
+	print("restoring -> ", Run.current_room_id)
+	
+
 
 
 # --- Selection ------------------------------------------------------------
@@ -135,6 +139,10 @@ func _on_room_selected(room: MapRoom) -> void:
 		Run.visited.append(Run.current_room_id)
 	Run.current_room_id = room.name
 	Run.current_room_type = room.room_type
+	
+	# in _on_room_selected, right after the assignment:
+	print("picked -> ", Run.current_room_id)
+
 	
 	# Signal the other scenes to pass room parameters (TODO: we might not need this)
 	room_chosen.emit(room)
