@@ -46,6 +46,9 @@ func win_combat() -> void:
 		pair.data.hp = pair.node.hp
 	get_tree().change_scene_to_file("res://Scenes/rewards.tscn")
 
+func game_over() -> void:
+	get_tree().change_scene_to_file("res://Scenes/game_over.tscn")
+
 func setup_enemies():
 	for enemy in enemies:
 		enemy.setup()
@@ -124,7 +127,7 @@ func _on_next_turn_gui_input(event: InputEvent) -> void:
 			enemies_take_actions()
 			var all_dead = clear_dead(get_hero_nodes())
 			if all_dead:
-				print("RUN FAILED.")
+				game_over()
 			# TODO: check for game over
 			discard_hand()
 			enemies_select_actions()

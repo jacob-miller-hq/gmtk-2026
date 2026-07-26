@@ -29,6 +29,7 @@ func reset() -> void:
 	current_room_id = "start"
 	current_room_type = ""
 	visited.clear()
+	get_tree().change_scene_to_file("res://Scenes/map.tscn")
 
 	heroes = [
 		HeroData.new("Hero The One", 42, 15),
