@@ -7,6 +7,7 @@ const Card = preload("res://Scenes/card.tscn")
 @onready var discard_pile_node: Node2D = $DiscardPile
 
 @export var heroes: Array[Node2D] = []
+@export var enemies: Array[Node2D] = []
 
 const draw_count = 5
 
@@ -32,16 +33,21 @@ var deck: Array[int] = [
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	print(enemies.size())
+	setup_enemies()
 	setup_heroes()
 	draw_pile_node.set_pile(deck.duplicate())
 	draw_pile_node.shuffle()
 	discard_pile_node.dump()
+	enemies_select_actions()
 	draw_for_turn()
 
+func setup_enemies():
+	for enemy in enemies:
+		enemy.setup()
+
 func setup_heroes():
-	# TODO: these should probably be instantiated here
 	for hero in heroes:
-		print(hero.hero_name)
 		hero.set_hp(hero.max_hp)
 		hero.set_action_available(true)
 		hero.connect("hero_clicked", func():
@@ -51,14 +57,24 @@ func setup_heroes():
 				var discarded: Array[int] = [hand_node.discard(card)]
 				discard_pile_node.place_on_top(discarded)
 				print(ability.title)
+				match(ability.target):
+					"party":
+						ability.effect.call(heroes)
+					"enemies":
+						ability.effect.call(enemies)
+					"self":
+						ability.effect.call(hero)
 				hero.set_action_available(false)
+				var all_dead = clear_dead(enemies)
+				if all_dead:
+					print("ROOM COMPLETE!") # TODO
 				return
 			print(hero.abilities) # TODO
 		)
 
 func enemies_select_actions():
-	print("Enemy will attack")
-	pass # TODO
+	for enemy in enemies:
+		enemy.choose_action()
 
 func draw_for_turn():
 	var new_hand: Array[Node2D] = []
@@ -73,8 +89,8 @@ func draw_for_turn():
 	hand_node.add_cards(new_hand)
 
 func enemies_take_actions():
-	print("Enemy attack")
-	pass # TODO
+	for enemy in enemies:
+		enemy.take_action(heroes)
 
 func discard_hand():
 	discard_pile_node.place_on_top(hand_node.dump())
@@ -83,6 +99,9 @@ func _on_next_turn_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
 			enemies_take_actions()
+			var all_dead = clear_dead(heroes)
+			if all_dead:
+				print("RUN FAILED.")
 			# TODO: check for game over
 			discard_hand()
 			enemies_select_actions()
@@ -92,3 +111,11 @@ func _on_next_turn_gui_input(event: InputEvent) -> void:
 func heroes_make_ready():
 	for hero in heroes:
 		hero.set_action_available(true)
+
+func clear_dead(group: Array[Node2D]):
+	for member in group.duplicate():
+		if member.hp <= 0:
+			var index = group.find(member)
+			group.remove_at(index)
+			member.queue_free()
+	return group.size() == 0

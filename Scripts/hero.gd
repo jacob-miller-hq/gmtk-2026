@@ -17,10 +17,12 @@ var action_available: bool;
 var abilities = {
 	0: {
 		"title": "Great sword",
-		"description": "Do 20 damage to one enemy",
-		"target": "enemy",
-		"effect": func(target):
-			target.hp -= 20,
+		"description": "Do 20 damage to one random enemy",
+		"target": "enemies",
+		"effect": func(enemies):
+			var index = randi_range(0, enemies.size() - 1)
+			print(enemies.size(), index)
+			enemies[index].damage(20),
 	},
 	1: {
 		"title": "Healing aura",
@@ -28,14 +30,14 @@ var abilities = {
 		"target": "party",
 		"effect": func(allies):
 			for ally in allies:
-				ally.hp += 5,
+				ally.set_hp(ally.hp + 5),
 	},
 	2: {
 		"title": "Guard self",
 		"description": "Take no damage this turn",
 		"target": "self",
-		"effect": func():
-			status_effects.set("guarded", true),
+		"effect": func(hero):
+			hero.status_effects.set("guarded", true),
 	}
 }
 var status_effects = {}
@@ -59,4 +61,5 @@ func set_action_available(b: bool):
 func _on_area_2d_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
+			print("hero pressed")
 			emit_signal("hero_clicked");
