@@ -70,8 +70,16 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 
+func open() -> void:
+	visible  = true
+	
+
 func close() -> void:
 	visible = false
+	
+
+func toggle() -> void:
+	visible = not visible
 
 
 # --- Input action ---------------------------------------------------------
