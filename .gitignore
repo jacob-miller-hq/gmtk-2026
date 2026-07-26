@@ -1,6 +1,8 @@
 .DS_Store
 .vscode
 
+Builds/
+
 # Godot Kawa Code addons
 addons
 
