@@ -9,7 +9,7 @@ size = Vector2(80, 120)
 font_size = 64
 font_color = Color(0, 0, 0, 1)
 shadow_size = 4
-shadow_color = Color(1, 1, 1, 1)
+shadow_color = Color(1, 1, 1, 0.5411765)
 shadow_offset = Vector2(-1, -1)
 
 [node name="DrawPile" type="Node2D" unique_id=54056495]
