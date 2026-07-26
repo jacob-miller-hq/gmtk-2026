@@ -2,6 +2,8 @@ extends Node2D
 
 signal hero_clicked
 
+const Card = preload("res://Scenes/card.tscn")
+
 # Authoring seeds. Only used when a Hero is placed directly in a scene with no
 # run data injected (e.g. the display hero in rewards.tscn). Combat heroes
 # ignore these — they receive their stats through setup(data).
@@ -23,7 +25,7 @@ var status_effects = {}
 @onready var name_label: Label = $Nameplate/ColorRect/Name
 @onready var hp_bar: ColorRect = $Nameplate/ColorRect/HPBar
 @onready var hp_rect: ColorRect = $Nameplate/ColorRect/HPBar/HP
-@onready var action_taken: Sprite2D = $ActionTaken
+@onready var available_actions: Node2D = $AvailableActions
 
 # Passthrough so existing `hero.hp` reads/writes (enemy attacks, healing effects,
 # death checks) hit the persistent HeroData rather than a local copy.
@@ -93,6 +95,12 @@ func _ready() -> void:
 	age_label.text = str(data.age)
 	name_label.text = data.hero_name
 	sprite_2d.texture = hero_textures.get(data.hero_name)
+	for suit in abilities.keys():
+		var card: Node2D = Card.instantiate()
+		card.suit = suit
+		available_actions.add_child(card)
+		card.transform.origin.x = suit * 20
+		card.scale = Vector2(0.3, 0.3)
 	_refresh_hp_bar()
 
 func set_hp(new_hp: int) -> void:
@@ -116,9 +124,9 @@ func _refresh_hp_bar() -> void:
 
 func set_action_available(b: bool):
 	action_available = b
-	# TODO: Maybe expand this to show different stuff for different actions,
-	#   e.g. preparing spell or whatever
-	action_taken.visible = action_available
+	# TODO: Maybe expand this to show different stuff for multi-turn actions,
+	#   e.g. preparing spell or guarding
+	available_actions.visible = b
 
 func _on_area_2d_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
