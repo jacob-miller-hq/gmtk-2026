@@ -83,28 +83,6 @@ mouse_filter = 1
 [node name="Enemy" parent="Enemies" unique_id=712620868 instance=ExtResource("6_yt1oa")]
 position = Vector2(1265, 546)
 
-[node name="Enemies" type="Node" parent="Enemies/Enemy" unique_id=132592392]
-
-[node name="Enemy" parent="Enemies/Enemy/Enemies" unique_id=653697962 instance=ExtResource("6_yt1oa")]
-position = Vector2(1265, 546)
-
-[node name="Enemy2" parent="Enemies/Enemy/Enemies" unique_id=1385690544 instance=ExtResource("6_yt1oa")]
-position = Vector2(1444, 501)
-
-[node name="Enemy3" parent="Enemies/Enemy/Enemies" unique_id=10027282 instance=ExtResource("6_yt1oa")]
-position = Vector2(1617, 549)
-
-[node name="Enemies" type="Node" parent="Enemies/Enemy/Enemies" unique_id=1693077368]
-
-[node name="Enemy" parent="Enemies/Enemy/Enemies/Enemies" unique_id=2026844321 instance=ExtResource("6_yt1oa")]
-position = Vector2(1265, 546)
-
-[node name="Enemy2" parent="Enemies/Enemy/Enemies/Enemies" unique_id=363151026 instance=ExtResource("6_yt1oa")]
-position = Vector2(1444, 501)
-
-[node name="Enemy3" parent="Enemies/Enemy/Enemies/Enemies" unique_id=1183599567 instance=ExtResource("6_yt1oa")]
-position = Vector2(1617, 549)
-
 [node name="Enemy2" parent="Enemies" unique_id=987069583 instance=ExtResource("6_yt1oa")]
 position = Vector2(1444, 501)
 
