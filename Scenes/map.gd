@@ -23,7 +23,8 @@ signal room_chosen(room: MapRoom)
 
 # --- Map definition -------------------------------------------------------
 const MAP := [
-	{ "id": "start", "pos": Vector2(960, 960), "type": "start",  "to": ["bones01", "bones02"] },
+	{ "id": "start", "pos": Vector2(960, 1200), "type": "start",  "to": ["reg00"] },
+	{ "id": "reg00", "pos": Vector2(960, 960), "type": "combat", "to": ["bones01", "bones02"] },
 
 	{ "id": "bones01",    "pos": Vector2(680, 760), "type": "bones", "to": ["reg01", "reg02"] },
 	{ "id": "bones02",    "pos": Vector2(1240, 760), "type": "bones", "to": ["reg02", "reg03"] },

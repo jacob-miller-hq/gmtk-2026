@@ -10,7 +10,7 @@ const Hero = preload("res://Scenes/hero.tscn")
 @export var heroes: Array[Node2D] = []
 @export var enemies: Array[Node2D] = []
 
-const draw_count = 5
+const draw_count = 7
 
 var deck: Array[int] = [
 	0, 0, 0, 0, 0,
@@ -135,6 +135,7 @@ func _on_next_turn_gui_input(event: InputEvent) -> void:
 func heroes_make_ready():
 	for hero in get_hero_nodes():
 		hero.set_action_available(true)
+		hero.status_effects = {}
 
 # Enemies live in the real @export array, so removing them in place is correct.
 func clear_dead(group: Array[Node2D]):

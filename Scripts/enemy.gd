@@ -11,7 +11,7 @@ var hp: int
 var intended_action: String
 var abilities = {
 	"attacking": func(target: Node2D):
-		target.set_hp(target.hp - 10)
+		target.damage(randi_range(2, 3))
 }
 
 func setup():

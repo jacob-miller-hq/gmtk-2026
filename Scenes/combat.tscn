@@ -13,7 +13,7 @@ font_color = Color(0.101960786, 0.26666668, 0.1764706, 1)
 
 [node name="Combat" type="Node2D" unique_id=36955880 node_paths=PackedStringArray("heroes", "enemies")]
 script = ExtResource("1_4ln8h")
-heroes = [NodePath("")]
+heroes = [null]
 enemies = [NodePath("Enemies/Enemy"), NodePath("Enemies/Enemy2"), NodePath("Enemies/Enemy3")]
 
 [node name="Hand" parent="." unique_id=1096619337 instance=ExtResource("1_7jmb3")]

@@ -2,6 +2,9 @@
 
 [ext_resource type="Script" uid="uid://s506yoxwo5xn" path="res://Scripts/hero.gd" id="1_stlmo"]
 [ext_resource type="Texture2D" uid="uid://c26p8myiy8jl3" path="res://Sprites/icon.svg" id="2_awl7p"]
+[ext_resource type="Texture2D" uid="uid://b6wy87bwoa2eq" path="res://Sprites/Hero The One.png" id="2_j8u8u"]
+[ext_resource type="Texture2D" uid="uid://cjb1o6rnv5ksu" path="res://Sprites/Hero Maybe.png" id="3_b5732"]
+[ext_resource type="Texture2D" uid="uid://lhdj658b4db6" path="res://Sprites/Hero Backup.png" id="4_uoxqq"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_ucn7y"]
 line_spacing = 0.0
@@ -25,9 +28,16 @@ size = Vector2(32, 32)
 
 [node name="Hero" type="Node2D" unique_id=45548510]
 script = ExtResource("1_stlmo")
+hero_textures = Dictionary[String, Texture]({
+"Hero Backup": ExtResource("4_uoxqq"),
+"Hero Maybe": ExtResource("3_b5732"),
+"Hero Rescued": ExtResource("2_awl7p"),
+"Hero The One": ExtResource("2_j8u8u")
+})
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1555691674]
-texture = ExtResource("2_awl7p")
+scale = Vector2(0.08, 0.08)
+texture = ExtResource("2_j8u8u")
 
 [node name="Nameplate" type="Control" parent="." unique_id=589114516]
 layout_mode = 3

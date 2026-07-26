@@ -13,15 +13,15 @@ var visited: Array[String] = []
 
 ## Heroes in hand
 var heroes: Array[HeroData] = [
-	HeroData.new("Hero The One", 42, 15),
-	HeroData.new("Hero Maybe", 30, 12),
-	HeroData.new("Hero Backup", 20, 10),
+	HeroData.new("Hero The One", 99, 15),
+	HeroData.new("Hero Maybe", 99, 12),
+	HeroData.new("Hero Backup", 99, 10),
 ]
 
 func add_hero() -> void:
 	print("Appending hero")
 	heroes.append(
-		HeroData.new("Hero Rescued", 13, 6),
+		HeroData.new("Hero Rescued", 99, 6),
 	)
 
 ## Call to start a fresh run (e.g. from a title screen or after game over).
@@ -32,7 +32,7 @@ func reset() -> void:
 	get_tree().change_scene_to_file("res://Scenes/map.tscn")
 
 	heroes = [
-		HeroData.new("Hero The One", 42, 15),
-		HeroData.new("Hero Maybe", 30, 12),
-		HeroData.new("Hero Backup", 20, 10),
+		HeroData.new("Hero The One", 99, 15),
+		HeroData.new("Hero Maybe", 99, 12),
+		HeroData.new("Hero Backup", 99, 10),
 	]

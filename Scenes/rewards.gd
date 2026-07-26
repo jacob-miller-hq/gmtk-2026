@@ -1,10 +1,19 @@
 extends Control
 
 const RewardCard = preload("res://reward_card.tscn")
+const Hero = preload("res://Scenes/hero.tscn")
 
 @onready var hand: Node2D = $Hand
 
-@export var heroes: Array[Node2D] = []
+const HERO_POS = [
+	Vector2(380, 380),
+	Vector2(550, 380),
+	Vector2(720, 380),
+
+	Vector2(380, 600),
+	Vector2(550, 600),
+	Vector2(720, 600),
+]
 
 func _ready():
 	if Run.current_room_type == "bones":
@@ -13,7 +22,12 @@ func _ready():
 	# TODO: increase rewards after elite rooms
 	var deage_cards = generate_deage_cards()
 	hand.add_cards(deage_cards)
-	for hero in heroes:
+	
+	for i in Run.heroes.size():
+		var hero = Hero.instantiate()
+		hero.setup(Run.heroes[i])
+		hero.position = HERO_POS[i]
+		hero.scale = Vector2(0.8, 0.8)
 		hero.connect("hero_clicked", func():
 			print("hero clicked")
 			var card = hand.selected_card
@@ -23,6 +37,7 @@ func _ready():
 				hero.modify_age(card.v)
 				# TODO: handle underage heroes
 		)
+		add_child(hero)
 
 func generate_deage_cards(target_reward: int = 15):
 	var rewards: Array[Node2D] = []

@@ -8,6 +8,7 @@ signal hero_clicked
 @export var hero_name: String = "Hero"
 @export var age: int = 40
 @export var max_hp: int = 15
+@export var hero_textures: Dictionary[String, Texture] = {}
 
 # HeroData is the single source of truth for a hero's live stats. Combat heroes
 # get it from Run.heroes via setup(); a standalone hero builds its own from the
@@ -17,6 +18,7 @@ var data: HeroData
 var action_available: bool
 var status_effects = {}
 
+@onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var age_label: Label = $Nameplate/ColorRect/Age
 @onready var name_label: Label = $Nameplate/ColorRect/Name
 @onready var hp_bar: ColorRect = $Nameplate/ColorRect/HPBar
@@ -37,7 +39,7 @@ var hp: int:
 var abilities = {
 	0: {
 		"title": "Great sword",
-		"description": "Do 20 damage to one random enemy",
+		"description": "Do 10 damage to one random enemy",
 		"target": "enemies",
 		"effect": func(enemies):
 			var index = randi_range(0, enemies.size() - 1)
@@ -46,11 +48,11 @@ var abilities = {
 	},
 	1: {
 		"title": "Healing aura",
-		"description": "Heal all allies for 5hp",
+		"description": "Heal all allies for 2hp",
 		"target": "party",
 		"effect": func(allies):
 			for ally in allies:
-				ally.set_hp(ally.hp + 5),
+				ally.heal(2),
 	},
 	2: {
 		"title": "Guard self",
@@ -64,6 +66,24 @@ var abilities = {
 # Inject persistent data before the node enters the tree (combat heroes).
 func setup(d: HeroData) -> void:
 	data = d
+	match(data.hero_name):
+		"Hero The One":
+			abilities.erase(1)
+		"Hero Maybe":
+			if data.age > 50:
+				abilities.erase(0)
+				abilities.erase(1)
+		"Hero Backup":
+			abilities.erase(0)
+		"Hero Rescued":
+			abilities.set(0, {
+				"title": "Suppressing fire",
+				"description": "Do 3-5 damage to all enemies",
+				"target": "enemies",
+				"effect": func(enemies):
+					for enemy in enemies:
+						enemy.damage(randi_range(3, 5))
+			})
 
 func _ready() -> void:
 	if data == null:
@@ -72,10 +92,22 @@ func _ready() -> void:
 		data = HeroData.new(hero_name, age, max_hp)
 	age_label.text = str(data.age)
 	name_label.text = data.hero_name
+	sprite_2d.texture = hero_textures.get(data.hero_name)
 	_refresh_hp_bar()
 
 func set_hp(new_hp: int) -> void:
 	hp = new_hp   # routes through the setter: writes data.hp and refreshes the bar
+
+func damage(amount: int):
+	if status_effects.get("guarded"):
+		return
+	hp -= amount
+	
+func heal(amount: int):
+	if hp + amount >= data.max_hp:
+		hp = data.max_hp
+	else:
+		hp += amount
 
 func _refresh_hp_bar() -> void:
 	if hp_rect == null or data == null:
@@ -96,3 +128,4 @@ func _on_area_2d_input_event(_viewport: Node, event: InputEvent, _shape_idx: int
 func modify_age(delta: int):
 	data.age += delta
 	age_label.text = str(data.age)
+	heal(-delta)

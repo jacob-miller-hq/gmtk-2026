@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://cdbx3l14rju36" path="res://Scenes/hero.tscn" id="3_7sr40"]
 [ext_resource type="PackedScene" uid="uid://dnpd880j1f638" path="res://Scenes/quit_button.tscn" id="4_7sr40"]
 
-[node name="Rewards" type="Control" unique_id=1865376909 node_paths=PackedStringArray("heroes")]
+[node name="Rewards" type="Control" unique_id=1865376909]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -14,7 +14,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 script = ExtResource("1_rw")
-heroes = [NodePath("Heroes/Hero")]
 
 [node name="Background" type="ColorRect" parent="." unique_id=1491852314]
 layout_mode = 1
@@ -67,12 +66,17 @@ scale = Vector2(2, 2)
 [node name="Heroes" type="Node2D" parent="." unique_id=1601951372]
 position = Vector2(961, 462)
 
-[node name="Hero" parent="Heroes" unique_id=45548510 instance=ExtResource("3_7sr40")]
+[node name="DebugHero" parent="Heroes" unique_id=45548510 instance=ExtResource("3_7sr40")]
+visible = false
 hero_name = "Winner McGee"
 age = 99
 max_hp = 50
 
 [node name="QuitButton" parent="." unique_id=404419385 instance=ExtResource("4_7sr40")]
 layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 100.0
+offset_bottom = 80.0
 
 [connection signal="pressed" from="Continue" to="." method="_on_continue_pressed"]
